@@ -197,7 +197,7 @@ class CricketScoreboardPlugin(BasePlugin):
     def _fetch_league_data(self, league_key: str, league_config: Dict) -> List[Dict]:
         """Fetch game data for a specific league."""
         cache_key = f"cricket_{league_key}_{datetime.now().strftime('%Y%m%d')}"
-        update_interval = int(league_config.get('update_interval_seconds', 60))
+        update_interval = league_config.get('update_interval_seconds', 60)
 
         # Check cache first (use league-specific interval)
         cached_data = self.cache_manager.get(cache_key)
@@ -220,7 +220,8 @@ class CricketScoreboardPlugin(BasePlugin):
             games = self._process_api_response(data, league_key, league_config)
 
             # Cache for league-specific interval
-            self.cache_manager.set(cache_key, games, ttl=update_interval * 2)
+            #self.cache_manager.set(cache_key, games, ttl=update_interval * 2)
+            self.cache_manager.set(cache_key, games, update_interval * 2)
 
             return games
 
