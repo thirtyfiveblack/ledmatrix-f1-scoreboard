@@ -277,13 +277,15 @@ class CricketScoreboardPlugin(BasePlugin):
                 'home_team': {
                     'name': home_team.get('team', {}).get('displayName', 'Unknown'),
                     'abbrev': home_team.get('team', {}).get('abbreviation', 'UNK'),
-                    'score': int(home_team.get('score', 0)),
+                    #'score': int(home_team.get('score', 0)),
+                    'score': home_team.get('score', 'Unknown'),
                     'logo': home_team.get('team', {}).get('logo')
                 },
                 'away_team': {
                     'name': away_team.get('team', {}).get('displayName', 'Unknown'),
                     'abbrev': away_team.get('team', {}).get('abbreviation', 'UNK'),
-                    'score': int(away_team.get('score', 0)),
+                    #'score': int(away_team.get('score', 0)),
+                    'score': away_team.get('score', 'Unknown'),
                     'logo': away_team.get('team', {}).get('logo')
                 },
                 'status': {
