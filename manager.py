@@ -1,7 +1,7 @@
 """
-Soccer Scoreboard Plugin for LEDMatrix
+Cricket Scoreboard Plugin for LEDMatrix
 
-Displays live, recent, and upcoming soccer games across multiple leagues including
+Displays live, recent, and upcoming Cricket games across multiple leagues including
 Premier League, La Liga, Bundesliga, Serie A, Ligue 1, MLS, and more.
 
 Features:
@@ -30,14 +30,14 @@ from src.plugin_system.base_plugin import BasePlugin
 logger = logging.getLogger(__name__)
 
 
-class SoccerScoreboardPlugin(BasePlugin):
+class CricketScoreboardPlugin(BasePlugin):
     """
-    Soccer scoreboard plugin for displaying games across multiple leagues.
+    Cricket scoreboard plugin for displaying games across multiple leagues.
 
-    Supports various soccer leagues with live, recent, and upcoming game modes.
+    Supports various Cricket leagues with live, recent, and upcoming game modes.
 
     Configuration options:
-        leagues: Enable/disable specific soccer leagues
+        leagues: Enable/disable specific Cricket leagues
         display_modes: Enable live, recent, upcoming modes
         favorite_teams: Team names per league
         show_records: Display team records
@@ -45,16 +45,16 @@ class SoccerScoreboardPlugin(BasePlugin):
         background_service: Data fetching configuration
     """
 
-    # ESPN API endpoints for soccer leagues
+    # ESPN API endpoints for cricket leagues
     ESPN_API_URLS = {
         'theashes.2526': 'https://site.api.espn.com/apis/site/v2/sports/cricket/1455609/scoreboard',
         'sheffieldshield.2526': 'https://site.api.espn.com/apis/site/v2/sports/cricket/1495274/scoreboard',
-        'ger.1': 'https://site.api.espn.com/apis/site/v2/sports/soccer/ger.1/scoreboard',
-        'ita.1': 'https://site.api.espn.com/apis/site/v2/sports/soccer/ita.1/scoreboard',
-        'fra.1': 'https://site.api.espn.com/apis/site/v2/sports/soccer/fra.1/scoreboard',
-        'usa.1': 'https://site.api.espn.com/apis/site/v2/sports/soccer/usa.1/scoreboard',
-        'uefa.champions': 'https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.champions/scoreboard',
-        'uefa.europa': 'https://site.api.espn.com/apis/site/v2/sports/soccer/uefa.europa/scoreboard'
+        'ger.1': 'https://site.api.espn.com/apis/site/v2/sports/cricket/ger.1/scoreboard',
+        'ita.1': 'https://site.api.espn.com/apis/site/v2/sports/cricket/ita.1/scoreboard',
+        'fra.1': 'https://site.api.espn.com/apis/site/v2/sports/cricket/fra.1/scoreboard',
+        'usa.1': 'https://site.api.espn.com/apis/site/v2/sports/cricket/usa.1/scoreboard',
+        'uefa.champions': 'https://site.api.espn.com/apis/site/v2/sports/cricket/uefa.champions/scoreboard',
+        'uefa.europa': 'https://site.api.espn.com/apis/site/v2/sports/cricket/uefa.europa/scoreboard'
     }
 
     # League display names
@@ -71,7 +71,7 @@ class SoccerScoreboardPlugin(BasePlugin):
 
     def __init__(self, plugin_id: str, config: Dict[str, Any],
                  display_manager, cache_manager, plugin_manager):
-        """Initialize the soccer scoreboard plugin."""
+        """Initialize the cricket scoreboard plugin."""
         super().__init__(plugin_id, config, display_manager, cache_manager, plugin_manager)
 
         # Configuration - per-league structure
@@ -107,7 +107,7 @@ class SoccerScoreboardPlugin(BasePlugin):
             if league_config.get('enabled', False):
                 enabled_leagues.append(league_key)
 
-        self.logger.info("Soccer scoreboard plugin initialized")
+        self.logger.info("Cricket scoreboard plugin initialized")
         self.logger.info(f"Enabled leagues: {enabled_leagues}")
 
     def _register_fonts(self):
@@ -154,12 +154,12 @@ class SoccerScoreboardPlugin(BasePlugin):
                 color=(200, 200, 200)
             )
 
-            self.logger.info("Soccer scoreboard fonts registered")
+            self.logger.info("Cricket scoreboard fonts registered")
         except Exception as e:
             self.logger.warning(f"Error registering fonts: {e}")
 
     def update(self) -> None:
-        """Update soccer game data for all enabled leagues."""
+        """Update cricket game data for all enabled leagues."""
         if not self.initialized:
             return
 
@@ -180,10 +180,10 @@ class SoccerScoreboardPlugin(BasePlugin):
             self._sort_games()
 
             self.last_update = time.time()
-            self.logger.debug(f"Updated soccer data: {len(self.current_games)} games")
+            self.logger.debug(f"Updated cricket data: {len(self.current_games)} games")
 
         except Exception as e:
-            self.logger.error(f"Error updating soccer data: {e}")
+            self.logger.error(f"Error updating cricket data: {e}")
 
     def _sort_games(self):
         """Sort games by priority and favorites."""
@@ -208,7 +208,7 @@ class SoccerScoreboardPlugin(BasePlugin):
 
     def _fetch_league_data(self, league_key: str, league_config: Dict) -> List[Dict]:
         """Fetch game data for a specific league."""
-        cache_key = f"soccer_{league_key}_{datetime.now().strftime('%Y%m%d')}"
+        cache_key = f"cricket_{league_key}_{datetime.now().strftime('%Y%m%d')}"
         update_interval = league_config.get('update_interval_seconds', 60)
 
         # Check cache first (use league-specific interval)
@@ -331,24 +331,24 @@ class SoccerScoreboardPlugin(BasePlugin):
 
     def display(self, display_mode: str = None, force_clear: bool = False) -> None:
         """
-        Display soccer games.
+        Display cricket games.
 
         Args:
-            display_mode: Which mode to display (soccer_live, soccer_recent, soccer_upcoming)
+            display_mode: Which mode to display (cricket_live, cricket_recent, cricket_upcoming)
             force_clear: If True, clear display before rendering
         """
         if not self.initialized:
-            self._display_error("Soccer plugin not initialized")
+            self._display_error("Cricket plugin not initialized")
             return
 
         # Determine which display mode to use - prioritize live games if enabled
         if not display_mode:
             # Auto-select mode based on available games and priorities
             if self._has_live_games():
-                display_mode = 'soccer_live'
+                display_mode = 'cricket_live'
             else:
                 # Fall back to recent or upcoming
-                display_mode = 'soccer_recent' if self._has_recent_games() else 'soccer_upcoming'
+                display_mode = 'cricket_recent' if self._has_recent_games() else 'cricket_upcoming'
 
         self.current_display_mode = display_mode
 
@@ -375,15 +375,15 @@ class SoccerScoreboardPlugin(BasePlugin):
 
             # Check if this mode is enabled for this league
             display_modes = league_config.get('display_modes', {})
-            mode_enabled = display_modes.get(mode.replace('soccer_', ''), False)
+            mode_enabled = display_modes.get(mode.replace('cricket_', ''), False)
             if not mode_enabled:
                 continue
 
             # Filter by game state and per-league limits
-            if mode == 'soccer_live' and state == 'in':
+            if mode == 'cricket_live' and state == 'in':
                 filtered.append(game)
 
-            elif mode == 'soccer_recent' and state == 'post':
+            elif mode == 'cricket_recent' and state == 'post':
                 # Check recent games limit for this league
                 recent_limit = league_config.get('recent_games_to_show', 5)
                 recent_count = len([g for g in filtered if g.get('league') == league_key and g.get('status', {}).get('state') == 'post'])
@@ -391,7 +391,7 @@ class SoccerScoreboardPlugin(BasePlugin):
                     continue
                 filtered.append(game)
 
-            elif mode == 'soccer_upcoming' and state == 'pre':
+            elif mode == 'cricket_upcoming' and state == 'pre':
                 # Check upcoming games limit for this league
                 upcoming_limit = league_config.get('upcoming_games_to_show', 10)
                 upcoming_count = len([g for g in filtered if g.get('league') == league_key and g.get('status', {}).get('state') == 'pre'])
@@ -452,9 +452,9 @@ class SoccerScoreboardPlugin(BasePlugin):
         draw = ImageDraw.Draw(img)
 
         message = {
-            'soccer_live': "No Live Games",
-            'soccer_recent': "No Recent Games",
-            'soccer_upcoming': "No Upcoming Games"
+            'cricket_live': "No Live Games",
+            'cricket_recent': "No Recent Games",
+            'cricket_upcoming': "No Upcoming Games"
         }.get(mode, "No Games")
 
         draw.text((5, 12), message, fill=(150, 150, 150))
@@ -512,4 +512,4 @@ class SoccerScoreboardPlugin(BasePlugin):
     def cleanup(self) -> None:
         """Cleanup resources."""
         self.current_games = []
-        self.logger.info("Soccer scoreboard plugin cleaned up")
+        self.logger.info("Cricket scoreboard plugin cleaned up")
