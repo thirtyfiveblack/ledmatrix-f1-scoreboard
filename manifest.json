@@ -1,13 +1,13 @@
 {
-  "id": "soccer-scoreboard",
-  "name": "Soccer Scoreboard",
-  "description": "Live, recent, and upcoming soccer games across multiple leagues including Premier League, La Liga, Bundesliga, Serie A, Ligue 1, MLS, and more",
-  "author": "ChuckBuilds",
+  "id": "cricket-scoreboard",
+  "name": "Cricket Scoreboard",
+  "description": "Live, recent, and upcoming cricket games across multiple leagues including The Ashes, Sheffield Shield, and more",
+  "author": "thirtyfiveblack",
   "category": "sports",
-  "tags": ["soccer", "football", "premier-league", "la-liga", "bundesliga", "serie-a", "ligue-1", "mls", "sports", "scoreboard", "live-scores"],
-  "repo": "https://github.com/ChuckBuilds/ledmatrix-plugins",
+  "tags": ["cricket", "The Ashes", "Sheffield Shield", "BBL", "Big Bash", "sports", "scoreboard", "live-scores"],
+  "repo": "https://github.com/thirtyfiveblack/ledmatrix-cricket-scoreboard",
   "branch": "main",
-  "plugin_path": "plugins/soccer-scoreboard",
+  "plugin_path": "plugins/cricket-scoreboard",
   "versions": [
     {
       "version": "1.0.0",
@@ -22,9 +22,9 @@
   "verified": true,
   "screenshot": "",
   "display_modes": [
-    "soccer_live",
-    "soccer_recent",
-    "soccer_upcoming"
+    "cricket_live",
+    "cricket_recent",
+    "cricket_upcoming"
   ],
   "dependencies": {
     "base_classes": [
