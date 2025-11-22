@@ -110,7 +110,7 @@ class CricketScoreboardPlugin(BasePlugin):
         """Load fonts used by the scoreboard - matching original managers."""
         fonts = {}
         try:
-            fonts['score'] = ImageFont.truetype("assets/fonts/PressStart2P-Regular.ttf", 10)
+            fonts['score'] = ImageFont.truetype("assets/fonts/PressStart2P-Regular.ttf", 8)
             fonts['time'] = ImageFont.truetype("assets/fonts/PressStart2P-Regular.ttf", 8)
             fonts['team'] = ImageFont.truetype("assets/fonts/PressStart2P-Regular.ttf", 8)
             fonts['status'] = ImageFont.truetype("assets/fonts/4x6-font.ttf", 6)
@@ -323,7 +323,9 @@ class CricketScoreboardPlugin(BasePlugin):
                     'detail': status.get('type', {}).get('detail', ''),
                     'short_detail': status.get('type', {}).get('shortDetail', ''),
                     'period': status.get('period', 0),
-                    'display_clock': status.get('displayClock', '')
+                    'display_clock': status.get('displayClock', ''),
+                    'summary': status.get('summary',''),
+                    'session': status.get('session',''),
                 },
                 'start_time': event.get('date', ''),
                 'venue': competition.get('venue', {}).get('fullName', 'Unknown Venue')
@@ -434,7 +436,8 @@ class CricketScoreboardPlugin(BasePlugin):
         try:
             # Get logo directory from league configuration
             league_config = self.leagues.get(league, {})
-            logo_dir = league_config.get('logo_dir', 'assets/sports/cricket_logos')
+            #logo_dir = league_config.get('logo_dir', 'assets/sports/cricket_logos')
+            logo_dir = league_config.get('logo_dir', 'plugins-repo/cricket-scoreboard/logos')
             
             # Convert relative path to absolute path by finding LEDMatrix project root
             if not os.path.isabs(logo_dir):
@@ -545,10 +548,20 @@ class CricketScoreboardPlugin(BasePlugin):
                 home_score = str(home_team.get('score', 0))
                 away_score = str(away_team.get('score', 0))
                 score_text = f"{away_score}-{home_score}"
+
+                summary_text = status.get('summary','')
+                summary_x = (matrix_width - score_width) // 2
+                summary_y = (matrix_height // 2)
+                self._draw_text_with_outline(draw_overlay, summary_text, (summary_x, summary_y), self.fonts['score'], fill=(255, 200, 0))
+                
+                session_text = status.get('session','')
+                session_x = (matrix_width - score_width) // 2
+                session_y = (matrix_height // 2) + 5
+                self._draw_text_with_outline(draw_overlay, session_text, (session_x, session_y), self.fonts['score'], fill=(255, 200, 0))
                 
                 score_width = draw_overlay.textlength(score_text, font=self.fonts['score'])
                 score_x = (matrix_width - score_width) // 2
-                score_y = (matrix_height // 2) - 3
+                score_y = (matrix_height // 2) - 10
                 self._draw_text_with_outline(draw_overlay, score_text, (score_x, score_y), self.fonts['score'], fill=(255, 200, 0))
                 
                 # Inning/Status (top center)
