@@ -167,7 +167,7 @@ class CricketScoreboardPlugin(BasePlugin):
                 manager_id=self.plugin_id,
                 element_key=f"{self.plugin_id}.detail",
                 family="four_by_six",
-                size_px=10,
+                size_px=11,
                 color=(200, 200, 200)
             )
 
