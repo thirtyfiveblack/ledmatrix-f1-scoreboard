@@ -1,4 +1,6 @@
-# Cricket Scoreboard Plugin
+# F1 Scoreboard Plugin
+
+# Still being developed!!
 
 A plugin for LEDMatrix that displays live, recent, and upcoming cricket games.
 
