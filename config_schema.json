@@ -1,13 +1,13 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "title": "Cricket Scoreboard Plugin Configuration",
-  "description": "Configuration schema for the Cricket Scoreboard plugin",
+  "title": "F1 Scoreboard Plugin Configuration",
+  "description": "Configuration schema for the F1 Scoreboard plugin",
   "type": "object",
   "properties": {
     "enabled": {
       "type": "boolean",
       "default": false,
-      "description": "Enable or disable the cricket scoreboard plugin"
+      "description": "Enable or disable the F1 scoreboard plugin"
     },
     "display_duration": {
       "type": "number",
@@ -142,13 +142,13 @@
     "leagues": {
       "type": "object",
       "properties": {
-        "theashes.2526": {
+        "f1.25": {
           "type": "object",
           "properties": {
             "enabled": {
               "type": "boolean",
               "default": true,
-              "description": "Enable The Ashes games"
+              "description": "Enable F1"
             },
             "favorite_teams": {
               "type": "array",
@@ -194,62 +194,6 @@
               "minimum": 1,
               "maximum": 20,
               "description": "Maximum number of upcoming games to display"
-            }
-          },
-          "additionalProperties": false
-        },
-        "sheffieldshield.2526": {
-          "type": "object",
-          "properties": {
-            "enabled": {
-              "type": "boolean",
-              "default": true,
-              "description": "Enable Sheffield Shield games"
-            },
-            "favorite_teams": {
-              "type": "array",
-              "items": {
-                "type": "string",
-                "description": "La Liga team name or abbreviation"
-              },
-              "uniqueItems": true,
-              "maxItems": 20,
-              "description": "List of favorite La Liga teams to prioritize"
-            },
-            "display_modes": {
-              "type": "object",
-              "properties": {
-                "live": {
-                  "type": "boolean",
-                  "default": true,
-                  "description": "Show live La Liga games"
-                },
-                "recent": {
-                  "type": "boolean",
-                  "default": true,
-                  "description": "Show recently completed La Liga games"
-                },
-                "upcoming": {
-                  "type": "boolean",
-                  "default": true,
-                  "description": "Show upcoming La Liga games"
-                }
-              },
-              "additionalProperties": false
-            },
-            "recent_games_to_show": {
-              "type": "integer",
-              "default": 5,
-              "minimum": 1,
-              "maximum": 20,
-              "description": "Maximum number of recent La Liga games to display"
-            },
-            "upcoming_games_to_show": {
-              "type": "integer",
-              "default": 10,
-              "minimum": 1,
-              "maximum": 20,
-              "description": "Maximum number of upcoming La Liga games to display"
             }
           },
           "additionalProperties": false
