@@ -1,13 +1,13 @@
 {
-  "id": "cricket-scoreboard",
-  "name": "Cricket Scoreboard",
-  "description": "Live, recent, and upcoming cricket games across multiple leagues including The Ashes, Sheffield Shield, and more",
+  "id": "f1-scoreboard",
+  "name": "F1 Scoreboard",
+  "description": "Live, recent, and upcoming F1 races.",
   "author": "thirtyfiveblack",
   "category": "sports",
-  "tags": ["cricket", "The Ashes", "Sheffield Shield", "BBL", "Big Bash", "sports", "scoreboard", "live-scores"],
-  "repo": "https://github.com/thirtyfiveblack/ledmatrix-cricket-scoreboard",
+  "tags": ["f1", "racing", "sports", "scoreboard", "live-scores"],
+  "repo": "https://github.com/thirtyfiveblack/ledmatrix-f1-scoreboard",
   "branch": "main",
-  "plugin_path": "plugins/cricket-scoreboard",
+  "plugin_path": "plugins/f1-scoreboard",
   "versions": [
     {
       "version": "1.0.0",
@@ -21,11 +21,11 @@
   "last_updated": "2025-10-12",
   "verified": true,
   "screenshot": "",
-  "class_name": "CricketScoreboardPlugin",
+  "class_name": "F1ScoreboardPlugin",
   "display_modes": [
-    "cricket_live",
-    "cricket_recent",
-    "cricket_upcoming"
+    "f1_live",
+    "f1_recent",
+    "f1_upcoming"
   ],
   "dependencies": {
     "base_classes": [
