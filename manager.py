@@ -560,16 +560,17 @@ class CricketScoreboardPlugin(BasePlugin):
                 score_text = f"{home_score}-{away_score}"
 
                 # Inning/Status (top center)
-                if status.get('state') == 'post':
+                if status.get('description') == 'Innings break':
+                    status_text = status.get('description','Live')
+                elif status.get('state') == 'post':
+                    status_text = status.get('summary','Live')
+                elif status.get('state') == 'post':
                     status_text = status.get('summary','Final')
                 elif status.get('state') == 'pre':
                     status_text = status.get('summary','Upcoming')
                 else:
                     # Live game - show inning
-                    if status.get('description') == 'Innings break':
-                        status_text = status.get('description','Live')
-                    else:
-                        status_text = status.get('summary','Live')
+                    status_text = status.get('description','Live')
                 
                 status_width = draw_overlay.textlength(status_text, font=self.fonts['time'])
                 status_x = (matrix_width - status_width) // 2
