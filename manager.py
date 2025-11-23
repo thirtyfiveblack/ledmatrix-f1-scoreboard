@@ -1,7 +1,7 @@
 """
-Cricket Scoreboard Plugin for LEDMatrix
+F1 Scoreboard Plugin for LEDMatrix
 
-Displays live, recent, and upcoming Cricket games across multiple leagues including
+Displays live, recent, and upcoming F1 games across multiple leagues including
 The Ashes, Sheffield Shield and more.
 
 Features:
@@ -31,14 +31,14 @@ from src.plugin_system.base_plugin import BasePlugin
 logger = logging.getLogger(__name__)
 
 
-class CricketScoreboardPlugin(BasePlugin):
+class F1ScoreboardPlugin(BasePlugin):
     """
-    Cricket scoreboard plugin for displaying games across multiple leagues.
+    F1 scoreboard plugin for displaying games across multiple leagues.
 
-    Supports various Cricket leagues with live, recent, and upcoming game modes.
+    Supports various F1 leagues with live, recent, and upcoming game modes.
 
     Configuration options:
-        leagues: Enable/disable specific Cricket leagues
+        leagues: Enable/disable specific F1 leagues
         display_modes: Enable live, recent, upcoming modes
         favorite_teams: Team names per league
         show_records: Display team records
@@ -46,25 +46,19 @@ class CricketScoreboardPlugin(BasePlugin):
         background_service: Data fetching configuration
     """
 
-    # ESPN API endpoints for cricket leagues
+    # ESPN API endpoints for F1 leagues
     ESPN_API_URLS = {
-        'theashes.2526': 'https://site.api.espn.com/apis/site/v2/sports/cricket/1455609/scoreboard',
-        'sheffieldshield.2526': 'https://site.api.espn.com/apis/site/v2/sports/cricket/1495274/scoreboard',
-        'wbbl.2526': 'https://site.api.espn.com/apis/site/v2/sports/cricket/1490537/scoreboard',
-        'bbl.2526': 'https://site.api.espn.com/apis/site/v2/sports/cricket/1490534/scoreboard'
+        'f1.25': 'https://site.api.espn.com/apis/site/v2/sports/racing/f1/scoreboard'
     }
 
     # League display names
     LEAGUE_NAMES = {
-        'theashes.2526': 'The Ashes 2025/26',
-        'sheffieldshield.2526': 'Sheffield Shield 2025/26',
-        'wbbl.2526': 'WBBL 2025/26',
-        'bbl.2526': 'BBL 2025/26'
+        'f1.25': 'Formula 1 2025'
     }
 
     def __init__(self, plugin_id: str, config: Dict[str, Any],
                  display_manager, cache_manager, plugin_manager):
-        """Initialize the cricket scoreboard plugin."""
+        """Initialize the F1 scoreboard plugin."""
         super().__init__(plugin_id, config, display_manager, cache_manager, plugin_manager)
 
         # Configuration - per-league structure
@@ -103,7 +97,7 @@ class CricketScoreboardPlugin(BasePlugin):
             if league_config.get('enabled', False):
                 enabled_leagues.append(league_key)
 
-        self.logger.info("Cricket scoreboard plugin initialized")
+        self.logger.info("F1 scoreboard plugin initialized")
         self.logger.info(f"Enabled leagues: {enabled_leagues}")
 
     def _load_fonts(self):
@@ -172,12 +166,12 @@ class CricketScoreboardPlugin(BasePlugin):
                 color=(200, 200, 200)
             )
 
-            self.logger.info("Cricket scoreboard fonts registered")
+            self.logger.info("F1 scoreboard fonts registered")
         except Exception as e:
             self.logger.warning(f"Error registering fonts: {e}")
 
     def update(self) -> None:
-        """Update cricket game data for all enabled leagues."""
+        """Update F1 game data for all enabled leagues."""
         if not self.initialized:
             return
 
@@ -198,10 +192,10 @@ class CricketScoreboardPlugin(BasePlugin):
             self._sort_games()
 
             self.last_update = time.time()
-            self.logger.debug(f"Updated cricket data: {len(self.current_games)} games")
+            self.logger.debug(f"Updated F1 data: {len(self.current_games)} games")
 
         except Exception as e:
-            self.logger.error(f"Error updating cricket data: {e}")
+            self.logger.error(f"Error updating F1 data: {e}")
 
     def _sort_games(self):
         """Sort games by priority and favorites."""
@@ -226,7 +220,7 @@ class CricketScoreboardPlugin(BasePlugin):
 
     def _fetch_league_data(self, league_key: str, league_config: Dict) -> List[Dict]:
         """Fetch game data for a specific league."""
-        cache_key = f"cricket_{league_key}_{datetime.now().strftime('%Y%m%d')}"
+        cache_key = f"F1_{league_key}_{datetime.now().strftime('%Y%m%d')}"
         update_interval = league_config.get('update_interval_seconds', 60)
 
         # Check cache first (use league-specific interval)
@@ -361,24 +355,24 @@ class CricketScoreboardPlugin(BasePlugin):
 
     def display(self, display_mode: str = None, force_clear: bool = False) -> None:
         """
-        Display cricket games.
+        Display F1 games.
 
         Args:
-            display_mode: Which mode to display (cricket_live, cricket_recent, cricket_upcoming)
+            display_mode: Which mode to display (F1_live, F1_recent, F1_upcoming)
             force_clear: If True, clear display before rendering
         """
         if not self.initialized:
-            self._display_error("Cricket plugin not initialized")
+            self._display_error("F1 plugin not initialized")
             return
 
         # Determine which display mode to use - prioritize live games if enabled
         if not display_mode:
             # Auto-select mode based on available games and priorities
             if self._has_live_games():
-                display_mode = 'cricket_live'
+                display_mode = 'F1_live'
             else:
                 # Fall back to recent or upcoming
-                display_mode = 'cricket_recent' if self._has_recent_games() else 'cricket_upcoming'
+                display_mode = 'F1_recent' if self._has_recent_games() else 'F1_upcoming'
 
         self.current_display_mode = display_mode
 
@@ -405,15 +399,15 @@ class CricketScoreboardPlugin(BasePlugin):
 
             # Check if this mode is enabled for this league
             display_modes = league_config.get('display_modes', {})
-            mode_enabled = display_modes.get(mode.replace('cricket_', ''), False)
+            mode_enabled = display_modes.get(mode.replace('F1_', ''), False)
             if not mode_enabled:
                 continue
 
             # Filter by game state and per-league limits
-            if mode == 'cricket_live' and state == 'in':
+            if mode == 'F1_live' and state == 'in':
                 filtered.append(game)
 
-            elif mode == 'cricket_recent' and state == 'post':
+            elif mode == 'F1_recent' and state == 'post':
                 # Check recent games limit for this league
                 recent_limit = league_config.get('recent_games_to_show', 5)
                 recent_count = len([g for g in filtered if g.get('league') == league_key and g.get('status', {}).get('state') == 'post'])
@@ -421,7 +415,7 @@ class CricketScoreboardPlugin(BasePlugin):
                     continue
                 filtered.append(game)
 
-            elif mode == 'cricket_upcoming' and state == 'pre':
+            elif mode == 'F1_upcoming' and state == 'pre':
                 # Check upcoming games limit for this league
                 upcoming_limit = league_config.get('upcoming_games_to_show', 10)
                 upcoming_count = len([g for g in filtered if g.get('league') == league_key and g.get('status', {}).get('state') == 'pre'])
@@ -444,8 +438,8 @@ class CricketScoreboardPlugin(BasePlugin):
         try:
             # Get logo directory from league configuration
             league_config = self.leagues.get(league, {})
-            #logo_dir = league_config.get('logo_dir', 'assets/sports/cricket_logos')
-            logo_dir = league_config.get('logo_dir', 'plugin-repos/cricket-scoreboard/logos')
+            #logo_dir = league_config.get('logo_dir', 'assets/sports/F1_logos')
+            logo_dir = league_config.get('logo_dir', 'plugin-repos/F1-scoreboard/logos')
             
             # Convert relative path to absolute path by finding LEDMatrix project root
             if not os.path.isabs(logo_dir):
@@ -623,9 +617,9 @@ class CricketScoreboardPlugin(BasePlugin):
         draw = ImageDraw.Draw(img)
 
         message = {
-            'cricket_live': "No Live Games",
-            'cricket_recent': "No Recent Games",
-            'cricket_upcoming': "No Upcoming Games"
+            'F1_live': "No Live Games",
+            'F1_recent': "No Recent Games",
+            'F1_upcoming': "No Upcoming Games"
         }.get(mode, "No Games")
 
         draw.text((5, 12), message, fill=(150, 150, 150))
@@ -683,4 +677,4 @@ class CricketScoreboardPlugin(BasePlugin):
     def cleanup(self) -> None:
         """Cleanup resources."""
         self.current_games = []
-        self.logger.info("Cricket scoreboard plugin cleaned up")
+        self.logger.info("F1 scoreboard plugin cleaned up")
